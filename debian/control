@@ -1,0 +1,12 @@
+Source: install-progressbar
+Section: unknown
+Priority: extra
+Maintainer: Horst Tritremmel <hjt@sidux.com>
+Build-Depends: debhelper (>= 5), autotools-dev, libgtk2.0-dev, libglade2-dev
+Standards-Version: 3.7.2
+
+Package: install-progressbar
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: progressbar for sidux-installer
+ This is a progressbar for sidux-installer
