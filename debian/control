@@ -1,5 +1,5 @@
 Source: install-progressbar
-Section: unknown
+Section: admin
 Priority: extra
 Maintainer: Horst Tritremmel <hjt@sidux.com>
 Build-Depends: debhelper (>= 5), autotools-dev, libgtk2.0-dev, libglade2-dev

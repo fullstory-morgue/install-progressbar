@@ -1,6 +1,10 @@
 install-progressbar (0.0.1) unstable; urgency=low
 
+  [ Horst Tritremmel ]
   * Initial release
 
- -- Horst Tritremmel <hjt@sidux.com>  Sat, 17 Mar 2007 21:19:35 +0100
+  [ Stefan Lippers-Hollmann ]
+  * move to section admin.
+
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Sun, 18 Mar 2007 00:35:27 +0100
 
