@@ -1,4 +1,4 @@
-install-progressbar (001-1) unstable; urgency=low
+install-progressbar (0.0.1) unstable; urgency=low
 
   * Initial release
 
