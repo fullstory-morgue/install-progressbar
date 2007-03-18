@@ -8,14 +8,20 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "interface.h"
 #include "support.h"
+
+extern char FIFO_FILE_NAME[256];
 
 int
 main (int argc, char *argv[])
 {
   GtkWidget *window1;
+  int r;
 
 #ifdef ENABLE_NLS
   bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
@@ -27,6 +33,24 @@ main (int argc, char *argv[])
   gtk_init (&argc, &argv);
 
   add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
+
+  if ( argc < 2) 
+   {
+       perror("no --fifo=/...  option given\nexit\n");
+       return 1;
+   }
+
+  //programm option handling
+  for (r=1; r<argc; r++)
+  {
+
+       // directory from the *.bm metapackage files
+       if ( strncmp( argv[r], "--fifo=/", 8 )  == 0 ) {
+            strncpy(FIFO_FILE_NAME, argv[r], 256);
+       }
+
+  }
+
 
   /*
    * The following code was added by Glade to create one of each component

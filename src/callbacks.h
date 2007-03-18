@@ -40,3 +40,8 @@ on_install_progressbar_show            (GtkWidget       *widget,
 void
 on_install_progressbar_realize         (GtkWidget       *widget,
                                         gpointer         user_data);
+
+gboolean
+on_install_progressbar_configure_event (GtkWidget       *widget,
+                                        GdkEventConfigure *event,
+                                        gpointer         user_data);

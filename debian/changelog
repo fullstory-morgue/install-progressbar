@@ -6,5 +6,9 @@ install-progressbar (0.0.1) unstable; urgency=low
   [ Stefan Lippers-Hollmann ]
   * move to section admin.
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Sun, 18 Mar 2007 00:35:27 +0100
+  [ Horst Tritremmel ]
+  * pulse progressbar added
+  * option --fifo=/...  = fifo file name necessarily
+
+ -- Horst Tritremmel <hjt@sidux.com>  Sun, 18 Mar 2007 23:46:32 +0100
 
