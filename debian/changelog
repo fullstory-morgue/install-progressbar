@@ -9,6 +9,8 @@ install-progressbar (0.0.1) unstable; urgency=low
   [ Horst Tritremmel ]
   * pulse progressbar added
   * option --fifo=/...  = fifo file name necessarily
+  * completly rework, now with inotify, no fifo buffer necessarily, new option
+    for watched filename  --watch=<filename> instead of --fifo
 
- -- Horst Tritremmel <hjt@sidux.com>  Sun, 18 Mar 2007 23:46:32 +0100
+ -- Horst Tritremmel <hjt@sidux.com>  Mon, 19 Mar 2007 15:27:43 +0100
 

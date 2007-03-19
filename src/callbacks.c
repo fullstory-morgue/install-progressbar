@@ -18,69 +18,62 @@
 #include "interface.h"
 #include "support.h"
 
+#include "inotify.h"
+#include "inotify-syscalls.h"
 
-/* Fifo file */
-#define FIFO  "/tmp/fifo_inst"
 
-/* reasonable guess as to size of 1024 events */
 #define BUF_LEN    1024
 
-char FIFO_FILE_NAME[256];  // = extern variable argv[1] in main.c
-
+char FILE_NAME[256];  // = extern variable argv[1] in main.c
 GtkWidget *pprogres, *pprogres2, *label;
+static gint fd;
 
-static gint         fd;
-static GIOChannel   *ioc;
 
-int  do_it_at_first_time = 0;
 
 static gboolean
 f_notify(GIOChannel    *source, 
 	 GIOCondition  condition,
 	 gpointer      data)
 {
-   gchar  *read, *pbar_str, *text;
-   gsize   size;
-   GError *err;
-   gchar **buf;
+
+   gchar column[BUF_LEN], *pbar_str, *text;
+   char buf[BUF_LEN];
+   int len;
+   FILE *watched_file;
 
 
    while (gtk_events_pending ())
           gtk_main_iteration ();
 
+   // stop neverending loop
+   len = read (fd, buf, BUF_LEN);
 
-   err = NULL;
 
-   read = g_malloc0 ( BUF_LEN );
-   g_io_channel_read_chars (source, read, BUF_LEN, &size, &err);
-
-   buf = g_strsplit (read, "\r", 0);
-   read = g_strjoinv (NULL, buf);
-
-   if (read != NULL)
-   {
-       //g_print ("%s", read);
-
-       pbar_str  = strtok( read, "~");
-       text  = strtok(NULL, "~");
-
-       gtk_label_set_markup ( GTK_LABEL ( label ), text );
-
-       //printf("%f\n", pbar);
-       gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( pbar_str, NULL) );
+   // read the changed file
+   watched_file = fopen( FILE_NAME, "r" );
+   if( watched_file== NULL ) {
+      printf( "inotify watch file was not opened\n" );
    }
-   g_strfreev (buf);
+   else {
+
+       fseek( watched_file, 0L, SEEK_SET );
+       while ( fscanf( watched_file, "%[^\n]\n", column ) != EOF) {
+              printf("callback: %s\n", column);
+
+              pbar_str  = strtok( column, "~");
+              text  = strtok(NULL, "~");
+
+              gtk_label_set_markup ( GTK_LABEL ( label ), text );
+              gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( pbar_str, NULL) );
+
+       }
+    }
+    fclose( watched_file );
 
 
-   if( strncmp ( read, "end", 3 ) == 0 ) {
-       gtk_main_quit();
-   }
-
-   g_free (read);
-
-
-   return(TRUE);
+    return(TRUE);
 }
+
 
 
 gboolean up (gpointer user_data)
@@ -94,18 +87,20 @@ gboolean up (gpointer user_data)
 }
 
 
+
 void
 on_install_progressbar_show            (GtkWidget       *widget,
                                         gpointer         user_data)
 {
    GdkColor color;
-   char *fifo;
    PangoFontDescription *font_desc;
+   GIOChannel *ioc;
+   int wd;
+
 
   /********************************************
    *           PROGRESS BAR PART              *
    ********************************************/
-
    label = lookup_widget ( GTK_WIDGET (widget), "label1");
    //set color of label
    //gdk_color_parse ("blue", &color);
@@ -141,19 +136,18 @@ on_install_progressbar_show            (GtkWidget       *widget,
    gtk_widget_modify_bg (pprogres2, GTK_STATE_PRELIGHT, &color);
 
 
-  /********************************************
-   *                  fifo                    *
-   ********************************************/
-   //mkfifo(fifo, S_IRUSR | S_IWUSR);
 
-   // get fifo file name from programm call option --fifo=...
-   fifo = strtok(FIFO_FILE_NAME, "=");
-   fifo = strtok(NULL, "=");
+   //  Initialize, inotify!
+   fd = inotify_init();
+   if (fd < 0)  perror ("inotify_init");
 
-   fd=open(fifo, O_RDONLY);
+   //  Adding Watches
+   wd = inotify_add_watch (fd, FILE_NAME, IN_MODIFY | IN_CREATE );
+   if (wd < 0)  perror ("inotify_add_watch");
 
    ioc=g_io_channel_unix_new(fd);
    g_io_add_watch(ioc,G_IO_IN,(GIOFunc) f_notify, NULL);
+
 
    while (gtk_events_pending ())
 	  gtk_main_iteration ();
@@ -162,7 +156,7 @@ on_install_progressbar_show            (GtkWidget       *widget,
   /********************************************
    *        progresbar2 pulse                 *
    ********************************************/
-   g_timeout_add(20, up, pprogres2);
+   g_timeout_add( 20, up, pprogres2 );
 
 }
 

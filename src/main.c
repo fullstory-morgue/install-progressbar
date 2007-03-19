@@ -15,12 +15,15 @@
 #include "interface.h"
 #include "support.h"
 
-extern char FIFO_FILE_NAME[256];
+
+extern char FILE_NAME[256];
 
 int
 main (int argc, char *argv[])
 {
   GtkWidget *window1;
+  FILE *w_file;
+  char *watched_file;
   int r;
 
 #ifdef ENABLE_NLS
@@ -36,20 +39,38 @@ main (int argc, char *argv[])
 
   if ( argc < 2) 
    {
-       perror("no --fifo=/...  option given\nexit\n");
+       perror("no --watch=<filename>  option given\nexit\n");
        return 1;
    }
+
 
   //programm option handling
   for (r=1; r<argc; r++)
   {
 
-       // directory from the *.bm metapackage files
-       if ( strncmp( argv[r], "--fifo=/", 8 )  == 0 ) {
-            strncpy(FIFO_FILE_NAME, argv[r], 256);
+       if ( strncmp( argv[r], "--watch=/", 8 )  == 0 ) {
+            // get file name from programm call option --watch=...
+            watched_file = strtok(argv[r], "=");
+            watched_file = strtok(NULL, "=");
+            strncpy( FILE_NAME, watched_file, 256 );
+       }
+       else {
+            perror("no --watch=<filename>  option given\nexit\n");
+            return 1;
        }
 
   }
+
+
+  w_file = fopen( FILE_NAME, "w+" );
+  if( w_file == NULL ) {
+      perror( "inotify watch file not created\n" );
+      return 1;
+   }
+   else {
+      fclose( w_file );
+   }
+
 
 
   /*
