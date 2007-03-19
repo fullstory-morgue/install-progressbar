@@ -2,15 +2,15 @@ install-progressbar (0.0.1) unstable; urgency=low
 
   [ Horst Tritremmel ]
   * Initial release
-
-  [ Stefan Lippers-Hollmann ]
-  * move to section admin.
-
-  [ Horst Tritremmel ]
   * pulse progressbar added
   * option --fifo=/...  = fifo file name necessarily
   * completly rework, now with inotify, no fifo buffer necessarily, new option
     for watched filename  --watch=<filename> instead of --fifo
 
- -- Horst Tritremmel <hjt@sidux.com>  Mon, 19 Mar 2007 15:27:43 +0100
+  [ Stefan Lippers-Hollmann ]
+  * move to section admin.
+  * fix FTBS.
+  * make lintian happier.
+
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Mon, 19 Mar 2007 16:39:35 +0100
 
