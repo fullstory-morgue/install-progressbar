@@ -44,6 +44,7 @@ create_install_progressbar (void)
 
   install_progressbar = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (install_progressbar), _("sidux Installer"));
+  gtk_window_set_resizable (GTK_WINDOW (install_progressbar), FALSE);
   install_progressbar_icon_pixbuf = create_pixbuf ("install-pgb-conf.png");
   if (install_progressbar_icon_pixbuf)
     {

@@ -36,9 +36,9 @@ f_notify(GIOChannel    *source,
 	 gpointer      data)
 {
 
-   gchar column[BUF_LEN], *pbar_str, *text;
-   char buf[BUF_LEN];
-   int len;
+   gchar column[BUF_LEN], *pbar_str, text[BUF_LEN];
+   char pbar_str_m[BUF_LEN], buf[BUF_LEN];
+   int len, i;
    FILE *watched_file;
 
 
@@ -55,21 +55,39 @@ f_notify(GIOChannel    *source,
       printf( "inotify watch file was not opened\n" );
    }
    else {
-
+       i = 0;
+       strncpy( text, "", BUF_LEN );
        fseek( watched_file, 0L, SEEK_SET );
-       while ( fscanf( watched_file, "%[^\n]\n", column ) != EOF) {
-              printf("callback: %s\n", column);
+       //while ( fscanf( watched_file, "%[^\n]\n", column ) != EOF) {
+       while ( fgets( column, BUF_LEN, watched_file )  != NULL ) {
 
-              pbar_str  = strtok( column, "~");
-              text  = strtok(NULL, "~");
+             // exit main
+             if( strncmp ( column, "end", 3 ) == 0 ) {
+                   gtk_main_quit();
+             }
 
-              gtk_label_set_markup ( GTK_LABEL ( label ), text );
-              gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( pbar_str, NULL) );
+             if ( i < 1 ) {
+                   // first column of file contains double value for progressbar
+                   gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( column, NULL) );
+
+                   //pbar_str  = strtok( column, "~");
+                   //text  = strtok(NULL, "~");
+             }
+             else
+             {
+                   strncat( text, column, BUF_LEN );
+                   //gtk_progress_bar_set_text   ( GTK_PROGRESS_BAR( pprogres ), const gchar *text);
+             }
+             i++;
 
        }
+
+       gtk_label_set_markup ( GTK_LABEL ( label ), text );
+
     }
     fclose( watched_file );
 
+    gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres2 ), 0 );
 
     return(TRUE);
 }
