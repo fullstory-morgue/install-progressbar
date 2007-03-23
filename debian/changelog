@@ -1,8 +1,12 @@
 install-progressbar (0.0.3) UNRELEASED; urgency=low
 
+  [ Stefan Lippers-Hollmann ]
   * NOT RELEASED YET
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 20 Mar 2007 17:11:28 +0100
+  [ Horst Tritremmel ]
+  * add text in complete progressbar
+
+ -- Horst Tritremmel <hjt@sidux.com>  Fri, 23 Mar 2007 18:27:01 +0100
 
 install-progressbar (0.0.2) unstable; urgency=low
 

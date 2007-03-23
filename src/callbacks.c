@@ -25,7 +25,7 @@
 #define BUF_LEN    1024
 
 char FILE_NAME[256];  // = extern variable argv[1] in main.c
-GtkWidget *pprogres, *pprogres2, *label;
+GtkWidget *pprogres, *pprogres2, *label, *label_generally;
 static gint fd;
 
 
@@ -36,8 +36,8 @@ f_notify(GIOChannel    *source,
 	 gpointer      data)
 {
 
-   gchar column[BUF_LEN], *pbar_str, text[BUF_LEN];
-   char pbar_str_m[BUF_LEN], buf[BUF_LEN];
+   gchar column[BUF_LEN], text_current[BUF_LEN], text_complete[BUF_LEN] = "";
+   char buf[BUF_LEN], *assign;
    int len, i;
    FILE *watched_file;
 
@@ -56,7 +56,7 @@ f_notify(GIOChannel    *source,
    }
    else {
        i = 0;
-       strncpy( text, "", BUF_LEN );
+       strncpy( text_current, "", BUF_LEN );
        fseek( watched_file, 0L, SEEK_SET );
        //while ( fscanf( watched_file, "%[^\n]\n", column ) != EOF) {
        while ( fgets( column, BUF_LEN, watched_file )  != NULL ) {
@@ -66,23 +66,37 @@ f_notify(GIOChannel    *source,
                    gtk_main_quit();
              }
 
-             if ( i < 1 ) {
+ /*            if ( i < 1 ) {
                    // first column of file contains double value for progressbar
                    gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( column, NULL) );
 
-                   //pbar_str  = strtok( column, "~");
-                   //text  = strtok(NULL, "~");
+
              }
              else
-             {
-                   strncat( text, column, BUF_LEN );
-                   //gtk_progress_bar_set_text   ( GTK_PROGRESS_BAR( pprogres ), const gchar *text);
-             }
-             i++;
+             { */
+
+                   assign = strtok( column, "=");
+
+                   if ( strcmp ( assign, "PERC") == 0 ) {
+                       //strncat( text_current, strtok( NULL, "="), BUF_LEN );
+                       gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( strtok( NULL, "="), NULL) );
+                   }
+
+                   if ( strcmp ( assign, "CURRENT") == 0 ) {
+                       //strncat( text_current, strtok( NULL, "="), BUF_LEN );
+                       gtk_label_set_markup ( GTK_LABEL ( label ), strtok( NULL, "=") );
+                   }
+
+                   if ( strcmp ( assign, "COMPLETE") == 0 ) {
+                       //strncat( text_complete, strtok( NULL, "="), BUF_LEN );
+                       gtk_progress_bar_set_text ( GTK_PROGRESS_BAR( pprogres ), strtok( NULL, "=") );
+                   }
+
+            // }
+            // i++;
 
        }
 
-       gtk_label_set_markup ( GTK_LABEL ( label ), text );
 
     }
     fclose( watched_file );
@@ -138,6 +152,9 @@ on_install_progressbar_show            (GtkWidget       *widget,
    label = lookup_widget ( GTK_WIDGET (widget), "label_fifo");
 
    pprogres = lookup_widget(GTK_WIDGET(widget), "progressbar1");
+   font_desc = pango_font_description_from_string ("12");
+   gtk_widget_modify_font ( GTK_WIDGET(pprogres), font_desc);
+   pango_font_description_free (font_desc);
    // set color of ProgressBar
    gdk_color_parse ("gray70", &color);
    gtk_widget_modify_bg (pprogres, GTK_STATE_NORMAL, &color);
@@ -153,7 +170,15 @@ on_install_progressbar_show            (GtkWidget       *widget,
    gdk_color_parse ("IndianRed4", &color);
    gtk_widget_modify_bg (pprogres2, GTK_STATE_PRELIGHT, &color);
 
-
+   // set label_generally
+/*   label_generally = lookup_widget(GTK_WIDGET(widget), "label_generally");
+   gtk_label_set_markup ( GTK_LABEL ( label_generally ), 
+"<span foreground=\"indianred4\" font_desc=\"Sans Bold 14\">What is sidux? - Debian Hot and Spicy!</span>\n\n\
+<span font_desc=\"12\">\
+<b>sidux</b> is a full featured Debian Sid based live CD with a special focus on hard disk installations, a clean upgrade path within Sid and additional hard- and software support.\n\n\
+sidux contains <b>only dfsg free software</b>, so you'll probably want to add <b>contrib/ non-free </b>to your <b>/etc/apt/sources.list</b> and ensure internet access.\n\n\
+If your hardware need <b>firmware</b>, place it under <b>/lib/firmware/</b>\nread more at: http://sidux.com</span>" );
+*/
 
    //  Initialize, inotify!
    fd = inotify_init();

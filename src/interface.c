@@ -33,14 +33,15 @@ create_install_progressbar (void)
   GdkPixbuf *install_progressbar_icon_pixbuf;
   GtkWidget *fixed1;
   GtkWidget *progressbar1;
-  GtkWidget *hseparator1;
   GtkWidget *hseparator2;
+  GtkWidget *progressbar2;
   GtkWidget *image2;
   GtkWidget *image1;
-  GtkWidget *label_fifo;
-  GtkWidget *progressbar2;
-  GtkWidget *label1;
+  GtkWidget *label_generally;
   GtkWidget *label2;
+  GtkWidget *label_fifo;
+  GtkWidget *label1;
+  GtkWidget *hseparator1;
 
   install_progressbar = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (install_progressbar), _("sidux Installer"));
@@ -59,53 +60,63 @@ create_install_progressbar (void)
 
   progressbar1 = gtk_progress_bar_new ();
   gtk_widget_show (progressbar1);
-  gtk_fixed_put (GTK_FIXED (fixed1), progressbar1, 112, 352);
-  gtk_widget_set_size_request (progressbar1, 417, 25);
+  gtk_fixed_put (GTK_FIXED (fixed1), progressbar1, 0, 392);
+  gtk_widget_set_size_request (progressbar1, 600, 24);
   gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progressbar1), 0.01);
-
-  hseparator1 = gtk_hseparator_new ();
-  gtk_widget_show (hseparator1);
-  gtk_fixed_put (GTK_FIXED (fixed1), hseparator1, 0, 208);
-  gtk_widget_set_size_request (hseparator1, 529, 17);
 
   hseparator2 = gtk_hseparator_new ();
   gtk_widget_show (hseparator2);
   gtk_fixed_put (GTK_FIXED (fixed1), hseparator2, 0, 48);
-  gtk_widget_set_size_request (hseparator2, 529, 17);
+  gtk_widget_set_size_request (hseparator2, 600, 17);
+
+  progressbar2 = gtk_progress_bar_new ();
+  gtk_widget_show (progressbar2);
+  gtk_fixed_put (GTK_FIXED (fixed1), progressbar2, 0, 320);
+  gtk_widget_set_size_request (progressbar2, 600, 25);
+  gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progressbar2), 0.01);
 
   image2 = create_pixmap (install_progressbar, "install-pgb-title.png");
   gtk_widget_show (image2);
-  gtk_fixed_put (GTK_FIXED (fixed1), image2, 288, 8);
+  gtk_fixed_put (GTK_FIXED (fixed1), image2, 352, 8);
   gtk_widget_set_size_request (image2, 241, 33);
 
   image1 = create_pixmap (install_progressbar, "install-pgb-hot.jpg");
   gtk_widget_show (image1);
-  gtk_fixed_put (GTK_FIXED (fixed1), image1, 0, 85);
+  gtk_fixed_put (GTK_FIXED (fixed1), image1, 8, 112);
   gtk_widget_set_size_request (image1, 81, 97);
+
+  label_generally = gtk_label_new (_("<span foreground=\"indianred4\" font_desc=\"Sans Bold 14\">What is sidux? - Debian Hot and Spicy!</span>\n\n<span font_desc=\"12\"><b>sidux</b> is a full featured Debian Sid based live CD with a special focus on hard disk installations, a clean upgrade path within Sid and additional hard- and software support.\n\nsidux contains <b>only dfsg free software</b>, so you'll probably want to add <b>contrib/ non-free </b>to your <b>/etc/apt/sources.list</b> and ensure internet access.\n\nIf your hardware need <b>firmware</b>, place it under <b>/lib/firmware/</b>\nread more at: http://sidux.com</span>"));
+  gtk_widget_show (label_generally);
+  gtk_fixed_put (GTK_FIXED (fixed1), label_generally, 112, 72);
+  gtk_widget_set_size_request (label_generally, 489, 193);
+  gtk_label_set_use_markup (GTK_LABEL (label_generally), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (label_generally), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label_generally), 0, 0);
+
+  label2 = gtk_label_new (_("Current\nOperation:"));
+  gtk_widget_show (label2);
+  gtk_fixed_put (GTK_FIXED (fixed1), label2, 0, 280);
+  gtk_widget_set_size_request (label2, 129, 41);
+  gtk_label_set_line_wrap (GTK_LABEL (label2), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label2), 0, 0);
 
   label_fifo = gtk_label_new ("");
   gtk_widget_show (label_fifo);
-  gtk_fixed_put (GTK_FIXED (fixed1), label_fifo, 112, 88);
-  gtk_widget_set_size_request (label_fifo, 417, 110);
+  gtk_fixed_put (GTK_FIXED (fixed1), label_fifo, 112, 280);
+  gtk_widget_set_size_request (label_fifo, 494, 41);
+  gtk_label_set_line_wrap (GTK_LABEL (label_fifo), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label_fifo), 0, 0);
-
-  progressbar2 = gtk_progress_bar_new ();
-  gtk_widget_show (progressbar2);
-  gtk_fixed_put (GTK_FIXED (fixed1), progressbar2, 112, 272);
-  gtk_widget_set_size_request (progressbar2, 417, 25);
-  gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progressbar2), 0.01);
 
   label1 = gtk_label_new (_("Completed Operations:"));
   gtk_widget_show (label1);
-  gtk_fixed_put (GTK_FIXED (fixed1), label1, 112, 328);
-  gtk_widget_set_size_request (label1, 417, 25);
+  gtk_fixed_put (GTK_FIXED (fixed1), label1, 0, 368);
+  gtk_widget_set_size_request (label1, 593, 23);
   gtk_misc_set_alignment (GTK_MISC (label1), 0, 0);
 
-  label2 = gtk_label_new (_("Current Operation:"));
-  gtk_widget_show (label2);
-  gtk_fixed_put (GTK_FIXED (fixed1), label2, 112, 248);
-  gtk_widget_set_size_request (label2, 417, 25);
-  gtk_misc_set_alignment (GTK_MISC (label2), 0, 0);
+  hseparator1 = gtk_hseparator_new ();
+  gtk_widget_show (hseparator1);
+  gtk_fixed_put (GTK_FIXED (fixed1), hseparator1, 0, 264);
+  gtk_widget_set_size_request (hseparator1, 600, 17);
 
   g_signal_connect ((gpointer) install_progressbar, "delete_event",
                     G_CALLBACK (gtk_main_quit),
@@ -121,14 +132,15 @@ create_install_progressbar (void)
   GLADE_HOOKUP_OBJECT_NO_REF (install_progressbar, install_progressbar, "install_progressbar");
   GLADE_HOOKUP_OBJECT (install_progressbar, fixed1, "fixed1");
   GLADE_HOOKUP_OBJECT (install_progressbar, progressbar1, "progressbar1");
-  GLADE_HOOKUP_OBJECT (install_progressbar, hseparator1, "hseparator1");
   GLADE_HOOKUP_OBJECT (install_progressbar, hseparator2, "hseparator2");
+  GLADE_HOOKUP_OBJECT (install_progressbar, progressbar2, "progressbar2");
   GLADE_HOOKUP_OBJECT (install_progressbar, image2, "image2");
   GLADE_HOOKUP_OBJECT (install_progressbar, image1, "image1");
-  GLADE_HOOKUP_OBJECT (install_progressbar, label_fifo, "label_fifo");
-  GLADE_HOOKUP_OBJECT (install_progressbar, progressbar2, "progressbar2");
-  GLADE_HOOKUP_OBJECT (install_progressbar, label1, "label1");
+  GLADE_HOOKUP_OBJECT (install_progressbar, label_generally, "label_generally");
   GLADE_HOOKUP_OBJECT (install_progressbar, label2, "label2");
+  GLADE_HOOKUP_OBJECT (install_progressbar, label_fifo, "label_fifo");
+  GLADE_HOOKUP_OBJECT (install_progressbar, label1, "label1");
+  GLADE_HOOKUP_OBJECT (install_progressbar, hseparator1, "hseparator1");
 
   return install_progressbar;
 }
