@@ -45,6 +45,7 @@ create_install_progressbar (void)
   GtkWidget *label_generally;
   GtkWidget *image2;
   GtkWidget *label1;
+  GtkWidget *label_clock;
 
   install_progressbar = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (install_progressbar), _("sidux Installer"));
@@ -136,8 +137,14 @@ create_install_progressbar (void)
   label1 = gtk_label_new (_("Completed Operations:"));
   gtk_widget_show (label1);
   gtk_fixed_put (GTK_FIXED (fixed1), label1, 0, 424);
-  gtk_widget_set_size_request (label1, 593, 23);
+  gtk_widget_set_size_request (label1, 265, 25);
   gtk_misc_set_alignment (GTK_MISC (label1), 0, 0);
+
+  label_clock = gtk_label_new (_("00:00:00"));
+  gtk_widget_show (label_clock);
+  gtk_fixed_put (GTK_FIXED (fixed1), label_clock, 256, 424);
+  gtk_widget_set_size_request (label_clock, 217, 25);
+  gtk_misc_set_alignment (GTK_MISC (label_clock), 0, 0);
 
   g_signal_connect ((gpointer) install_progressbar, "delete_event",
                     G_CALLBACK (gtk_main_quit),
@@ -165,6 +172,7 @@ create_install_progressbar (void)
   GLADE_HOOKUP_OBJECT (install_progressbar, label_generally, "label_generally");
   GLADE_HOOKUP_OBJECT (install_progressbar, image2, "image2");
   GLADE_HOOKUP_OBJECT (install_progressbar, label1, "label1");
+  GLADE_HOOKUP_OBJECT (install_progressbar, label_clock, "label_clock");
 
   return install_progressbar;
 }

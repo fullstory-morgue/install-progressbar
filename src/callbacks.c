@@ -25,8 +25,8 @@
 #define BUF_LEN    1024
 
 char FILE_NAME[256];  // = extern variable argv[1] in main.c
-GtkWidget *pprogres, *pprogres2, *label, *label_generally;
-static gint fd;
+GtkWidget *pprogres, *pprogres2, *label, *label_generally, *label_clock;
+static gint fd, hour = 0, min = 0, sec = 0;
 
 
 
@@ -36,7 +36,7 @@ f_notify(GIOChannel    *source,
 	 gpointer      data)
 {
 
-   gchar column[BUF_LEN], text_current[BUF_LEN], text_complete[BUF_LEN] = "";
+   gchar column[BUF_LEN], text_current[BUF_LEN];
    char buf[BUF_LEN], *assign;
    int len, i;
    FILE *watched_file;
@@ -58,7 +58,7 @@ f_notify(GIOChannel    *source,
        i = 0;
        strncpy( text_current, "", BUF_LEN );
        fseek( watched_file, 0L, SEEK_SET );
-       //while ( fscanf( watched_file, "%[^\n]\n", column ) != EOF) {
+
        while ( fgets( column, BUF_LEN, watched_file )  != NULL ) {
 
              // exit main
@@ -66,34 +66,20 @@ f_notify(GIOChannel    *source,
                    gtk_main_quit();
              }
 
- /*            if ( i < 1 ) {
-                   // first column of file contains double value for progressbar
-                   gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( column, NULL) );
 
+             assign = strtok( column, "=");
 
+             if ( strcmp ( assign, "PERC") == 0 ) {
+                 gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( strtok( NULL, "="), NULL) );
              }
-             else
-             { */
 
-                   assign = strtok( column, "=");
+             if ( strcmp ( assign, "CURRENT") == 0 ) {
+                 gtk_label_set_markup ( GTK_LABEL ( label ), strtok( NULL, "=") );
+             }
 
-                   if ( strcmp ( assign, "PERC") == 0 ) {
-                       //strncat( text_current, strtok( NULL, "="), BUF_LEN );
-                       gtk_progress_bar_set_fraction ( GTK_PROGRESS_BAR( pprogres ), strtod( strtok( NULL, "="), NULL) );
-                   }
-
-                   if ( strcmp ( assign, "CURRENT") == 0 ) {
-                       //strncat( text_current, strtok( NULL, "="), BUF_LEN );
-                       gtk_label_set_markup ( GTK_LABEL ( label ), strtok( NULL, "=") );
-                   }
-
-                   if ( strcmp ( assign, "COMPLETE") == 0 ) {
-                       //strncat( text_complete, strtok( NULL, "="), BUF_LEN );
-                       gtk_progress_bar_set_text ( GTK_PROGRESS_BAR( pprogres ), strtok( NULL, "=") );
-                   }
-
-            // }
-            // i++;
+             if ( strcmp ( assign, "COMPLETE") == 0 ) {
+                 gtk_progress_bar_set_text ( GTK_PROGRESS_BAR( pprogres ), strtok( NULL, "=") );
+             }
 
        }
 
@@ -107,17 +93,50 @@ f_notify(GIOChannel    *source,
 }
 
 
-
 gboolean up (gpointer user_data)
 {
   /********************************************
    *        progresbar2 pulse                 *
    ********************************************/
    gtk_progress_bar_pulse  ( GTK_PROGRESS_BAR( pprogres2 ) );
-
    return(TRUE);
 }
 
+
+gboolean zeit (gpointer user_data)
+{
+  /********************************************
+   *                time counter              *
+   ********************************************/
+   char clock[80], min0[2] = "0", sec0[2] = "0";
+
+   sec++;
+   if ( sec == 60 ) {
+        sec = 0;
+        min++;
+   }
+
+   if ( sec < 10)
+        strncpy( sec0, "0", 2);
+   else
+        strncpy( sec0, "", 2);
+
+
+   if ( min == 60 ) {
+        min = 0;
+        hour++;
+   }
+
+   if ( min < 10)
+        strncpy( min0, "0", 2);
+   else
+        strncpy( min0, "", 2);
+
+   sprintf (clock, "0%d:%s%d:%s%d", hour, min0, min, sec0, sec);
+   gtk_label_set_text ( GTK_LABEL( label_clock ), clock );
+
+   return(TRUE);
+}
 
 
 void
@@ -134,9 +153,7 @@ on_install_progressbar_show            (GtkWidget       *widget,
    *           PROGRESS BAR PART              *
    ********************************************/
    label = lookup_widget ( GTK_WIDGET (widget), "label1");
-   //set color of label
-   //gdk_color_parse ("blue", &color);
-   //gtk_widget_modify_fg ( GTK_WIDGET(label), GTK_STATE_NORMAL, &color);
+
    font_desc = pango_font_description_from_string ("12");
    gtk_widget_modify_font ( GTK_WIDGET(label), font_desc);
    pango_font_description_free (font_desc);
@@ -170,15 +187,12 @@ on_install_progressbar_show            (GtkWidget       *widget,
    gdk_color_parse ("IndianRed4", &color);
    gtk_widget_modify_bg (pprogres2, GTK_STATE_PRELIGHT, &color);
 
-   // set label_generally
-/*   label_generally = lookup_widget(GTK_WIDGET(widget), "label_generally");
-   gtk_label_set_markup ( GTK_LABEL ( label_generally ), 
-"<span foreground=\"indianred4\" font_desc=\"Sans Bold 14\">What is sidux? - Debian Hot and Spicy!</span>\n\n\
-<span font_desc=\"12\">\
-<b>sidux</b> is a full featured Debian Sid based live CD with a special focus on hard disk installations, a clean upgrade path within Sid and additional hard- and software support.\n\n\
-sidux contains <b>only dfsg free software</b>, so you'll probably want to add <b>contrib/ non-free </b>to your <b>/etc/apt/sources.list</b> and ensure internet access.\n\n\
-If your hardware need <b>firmware</b>, place it under <b>/lib/firmware/</b>\nread more at: http://sidux.com</span>" );
-*/
+   // label_clock
+   label_clock = lookup_widget ( GTK_WIDGET (widget), "label_clock");
+   font_desc = pango_font_description_from_string ("Bold 12");
+   gtk_widget_modify_font ( GTK_WIDGET(label_clock), font_desc);
+   pango_font_description_free (font_desc);
+
 
    //  Initialize, inotify!
    fd = inotify_init();
@@ -199,7 +213,8 @@ If your hardware need <b>firmware</b>, place it under <b>/lib/firmware/</b>\nrea
   /********************************************
    *        progresbar2 pulse                 *
    ********************************************/
-   g_timeout_add( 20, up, pprogres2 );
+  g_timeout_add( 20, up, pprogres2 );
+  g_timeout_add( 1000, zeit, pprogres2 );
 
 }
 
