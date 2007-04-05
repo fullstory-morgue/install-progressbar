@@ -1,9 +1,5 @@
-install-progressbar (0.0.5) UNRELEASED; urgency=low
+install-progressbar (0.0.5) unstable; urgency=low
 
-  [ Stefan Lippers-Hollmann ]
-  * NOT RELEASED YET
-
-  [ Horst Tritremmel ]
   * add time counter
 
  -- Horst Tritremmel <hjt@sidux.com>  Wed, 04 Apr 2007 21:57:32 +0200
