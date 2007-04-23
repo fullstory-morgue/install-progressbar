@@ -1,9 +1,5 @@
-install-progressbar (0.0.6) UNRELEASED; urgency=low
+install-progressbar (0.0.6) unstable; urgency=low
 
-  [ Stefan Lippers-Hollmann ]
-  * NOT RELEASED YET
-
-  [ Horst Tritremmel ]
   * text changes and isn't selected 
 
  -- Horst Tritremmel <hjt@sidux.com>  Mon, 23 Apr 2007 21:11:25 +0200
