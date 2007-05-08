@@ -1,3 +1,9 @@
+install-progressbar (0.0.8) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 08 May 2007 12:20:47 +0200
+
 install-progressbar (0.0.7) unstable; urgency=low
 
   * symlinks for automake compontens are bad for checkouts, revert to an 
