@@ -1,8 +1,12 @@
 install-progressbar (0.0.8) UNRELEASED; urgency=low
 
+  [ Stefan Lippers-Hollmann ]
   * NOT RELEASED YET
 
- -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Tue, 08 May 2007 12:20:47 +0200
+  [ Horst Tritremmel ]
+  * info text updated
+
+ -- Horst Tritremmel <hjt@sidux.com>  Tue, 22 May 2007 21:20:43 +0200
 
 install-progressbar (0.0.7) unstable; urgency=low
 

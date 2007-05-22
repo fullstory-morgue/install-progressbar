@@ -39,13 +39,13 @@ create_install_progressbar (void)
   GtkWidget *label2;
   GtkWidget *label_fifo;
   GtkWidget *hseparator2;
+  GtkWidget *image2;
+  GtkWidget *label1;
+  GtkWidget *label_clock;
   GtkWidget *scrolledwindow1;
   GtkWidget *viewport1;
   GtkWidget *fixed2;
   GtkWidget *label_generally;
-  GtkWidget *image2;
-  GtkWidget *label1;
-  GtkWidget *label_clock;
 
   install_progressbar = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (install_progressbar), _("sidux Installer"));
@@ -104,29 +104,6 @@ create_install_progressbar (void)
   gtk_fixed_put (GTK_FIXED (fixed1), hseparator2, 0, 88);
   gtk_widget_set_size_request (hseparator2, 600, 17);
 
-  scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
-  gtk_widget_show (scrolledwindow1);
-  gtk_fixed_put (GTK_FIXED (fixed1), scrolledwindow1, 0, 104);
-  gtk_widget_set_size_request (scrolledwindow1, 601, 209);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_SHADOW_IN);
-
-  viewport1 = gtk_viewport_new (NULL, NULL);
-  gtk_widget_show (viewport1);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport1);
-
-  fixed2 = gtk_fixed_new ();
-  gtk_widget_show (fixed2);
-  gtk_container_add (GTK_CONTAINER (viewport1), fixed2);
-
-  label_generally = gtk_label_new (_("<span foreground=\"indianred4\" font_desc=\"Sans Bold 14\">What is sidux? - Debian Hot and Spicy!</span>\n\n<span font_desc=\"12\"><b>sidux</b> is a full featured Debian Sid based live CD with a special focus on hard disk installations, a clean upgrade path within Sid and additional hard- and software support.\nThe ISO is completely based on Debian Sid, enriched and stabilized with sidux' own packages and scripts.</span>\n\n\n<span font_desc=\"11\"><b><u>Hints for hardware with non-free needs:</u></b>\n\nsidux contains <b>only dfsg free software</b>, so you'll probably want to add <b>contrib/ non-free </b>to your <b>/etc/apt/sources.list</b> and ensure internet access.\n\n<b>You can add contrib and non-free with metapackage-installer.</b>\n\n\n<b><u>firmware</u></b>\n\n* ATi Radeon graphics: 3d acceleration for older cards up to r35x should work, newer Radeon X1xxx cards need non-free drivers for accelerated performance, please use get-sidux-binary-gfx to fetch install scripts for these cards.\n* Atheros/ \"madwifi\" wlan: m-a a-i madwifi.\n* Atmel AT76c50x 11 MBit/s wlan: apt-get install atmel-firmware\n* AVM ISDN/ ADSL PCI/ USB Karten: AVM's closed source driver are not compatible with kernel 2.6.20 yet.\n* Broadcom/ bcm43xx wlan: apt-get install bcm43xx-fwcutter.\n* Eagle USB ADSL modem: fetch the firmware from http://eagle-usb.org/ueagle-atm/non-free/ and place it under /lib/firmware/.\n* DVB firmwares for various full featured DVB TV cards (most budget cards won't need this): fetch the needed firmware (check dmesg) from http://www.linuxtv.org/downloads/firmware/ and place it under /lib/firmware/.\n* hostap based 11 MBit/s wlan with loadable firmware (e.g. D-Link DWL-520 rev. E1 and others): http://www.oakcourt.dyndns.org/~andrew/dwl520e1.html\n* Intel ipw2100, 11 MBit/s wlan: fetch the firmware from http://ipw2100.sf.net/ and place it under /lib/firmware/.\n* Intel ipw2200, 54 MBit/s wlan: fetch the firmware from http://ipw2200.sf.net/ and place it under /lib/firmware/.\n* Intel ipw3945, 54 Mbit/s wlan: apt-get install ipw3945d firmware-ipw3945\n* Intersil prism54, 54 MBit/s wlan: fetch the firmware from http://prism54.org/firmware/ and place it under /lib/firmware/.\n* nVidia graphics: 3d acceleration isn't possible with free drivers yet, please use get-sidux-binary-gfx to fetch install scripts for these cards.\n* RaLink rt61 54 MBit/s wlan, fetch the firmware from http://www.ralinktech.com/ralink/Home/Support/Linux.html\n* Texas Instruments ACX100 (22 Mbit/s)/ ACX111 (54 MBit/s) wlan, fetch the firmware from http://www.kazer.org/acx-firmware-20060207.tar.bz2 and place it under /lib/firmware/.\n* ZyDAS zd1201 11 MBit/s wlan: apt-get install zd1201-firmware\n* ZyDAS zd1211 54 MBit/s wlan: fetch the firmware from http://sourceforge.net/project/showfiles.php?group_id=129083 and place it under /lib/firmware/.\n* We will check if we can provide packages for at least some of these devices, but the legal status isn't necessarily easy.\n\n\n<b><u>Disclaimer:</u></b>\n\nThis is experimental software. Use at your own risk. The sidux project, it's developers and team members (all represented by the sidux Foundation, Inc) cannot be held liable under any circumstances for damage to hardware or software, lost data, or other direct or indirect damage resulting from the use of this software. If you do not agree to these terms and conditions, you are not permitted to use or further distribute this software.\n\n\n<b><u>Special thanks go to the entire sidux development team:</u></b>\n\nJoaquim Boura (x-un-i)\nRoland Engert (RoEn)\nAedan Kelly (etorix)\nBernard Gray (cleary)\nAndreas Hausmann (Bodhi)\nChris Hildebrandt (slam)\nRalph Hokanson Jr. (piper)\nHarald Hope (h2)\nKel Modderman (kelmo)\nStefan Lippers-Hollmann (slh)\nFerdi Thommes (devil)\nHorst Tritremmel (hjt)\nNiall Walsh (bfree)\nTrevor Walkley (bluewater)\nAndreas Weber (webera)\nand many more\n\na big thank you goes to the documentation and translation teams!\n\nThanks to all involved for making this possible:\n     Stefan Lippers-Hollmann (slh) \n</span>\n"));
-  gtk_widget_show (label_generally);
-  gtk_fixed_put (GTK_FIXED (fixed2), label_generally, 8, 8);
-  gtk_widget_set_size_request (label_generally, 560, 1600);
-  gtk_label_set_use_markup (GTK_LABEL (label_generally), TRUE);
-  gtk_label_set_line_wrap (GTK_LABEL (label_generally), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label_generally), 0, 0);
-
   image2 = create_pixmap (install_progressbar, "install-pgb-title.png");
   gtk_widget_show (image2);
   gtk_fixed_put (GTK_FIXED (fixed1), image2, 344, 48);
@@ -143,6 +120,29 @@ create_install_progressbar (void)
   gtk_fixed_put (GTK_FIXED (fixed1), label_clock, 256, 424);
   gtk_widget_set_size_request (label_clock, 217, 25);
   gtk_misc_set_alignment (GTK_MISC (label_clock), 0, 0);
+
+  scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow1);
+  gtk_fixed_put (GTK_FIXED (fixed1), scrolledwindow1, 0, 104);
+  gtk_widget_set_size_request (scrolledwindow1, 601, 209);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_SHADOW_IN);
+
+  viewport1 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (viewport1);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport1);
+
+  fixed2 = gtk_fixed_new ();
+  gtk_widget_show (fixed2);
+  gtk_container_add (GTK_CONTAINER (viewport1), fixed2);
+
+  label_generally = gtk_label_new (_("<span foreground=\"indianred4\" font_desc=\"Sans Bold 14\">What is sidux? - Debian Hot and Spicy!</span>\n\n<span font_desc=\"12\"><b>sidux</b> is a full featured Debian Sid based live CD with a special focus on hard disk installations, a clean upgrade path within Sid and additional hard- and software support.\nThe ISO is completely based on Debian Sid, enriched and stabilized with sidux' own packages and scripts.</span>\n\n\n<span font_desc=\"11\"><b><u>Hints for hardware with non-free needs:</u></b>\n\nsidux contains <b>only dfsg free software</b>, so you'll probably want to add <b>contrib/ non-free </b>to your <b>/etc/apt/sources.list</b> and ensure internet access.\n\n<span foreground=\"darkblue\" font_desc=\"Sans Bold 11\">You can add contrib and non-free with metapackage-installer.</span>\n\n\n<b><u>firmware</u></b>\n\n<span foreground=\"darkblue\" font_desc=\"Sans Bold 11\">* ATi Radeon graphics:</span> 3d acceleration for older cards up to r35x should work, newer Radeon X1xxx cards need non-free drivers for accelerated performance, type '<b>sgfxi -N radeon</b>'\n<span foreground=\"darkblue\" font_desc=\"Sans Bold 11\">* Nvidia  graphics:</span> type '<b>sgfxi -h</b>' to see available options\n* Atheros/ \"madwifi\" wlan: m-a a-i madwifi.\n* Atmel AT76c50x 11 MBit/s wlan: apt-get install atmel-firmware\n* AVM ISDN/ ADSL PCI/ USB Karten: AVM's closed source driver are not compatible with kernel 2.6.20 yet.\n* Broadcom/ bcm43xx wlan: apt-get install bcm43xx-fwcutter.\n* Eagle USB ADSL modem: fetch the firmware from http://eagle-usb.org/ueagle-atm/non-free/ and place it under /lib/firmware/.\n* DVB firmwares for various full featured DVB TV cards (most budget cards won't need this): fetch the needed firmware (check dmesg) from http://www.linuxtv.org/downloads/firmware/ and place it under /lib/firmware/.\n* hostap based 11 MBit/s wlan with loadable firmware (e.g. D-Link DWL-520 rev. E1 and others): http://www.oakcourt.dyndns.org/~andrew/dwl520e1.html\n* Intel ipw2100, 11 MBit/s wlan: fetch the firmware from http://ipw2100.sf.net/ and place it under /lib/firmware/.\n* Intel ipw2200, 54 MBit/s wlan: fetch the firmware from http://ipw2200.sf.net/ and place it under /lib/firmware/.\n* Intel ipw3945, 54 Mbit/s wlan: apt-get install ipw3945d firmware-ipw3945\n* Intersil prism54, 54 MBit/s wlan: fetch the firmware from http://prism54.org/firmware/ and place it under /lib/firmware/.\n* RaLink rt61 54 MBit/s wlan, fetch the firmware from http://www.ralinktech.com/ralink/Home/Support/Linux.html\n* Texas Instruments ACX100 (22 Mbit/s)/ ACX111 (54 MBit/s) wlan, fetch the firmware from http://www.kazer.org/acx-firmware-20060207.tar.bz2 and place it under /lib/firmware/.\n* ZyDAS zd1201 11 MBit/s wlan: apt-get install zd1201-firmware\n* ZyDAS zd1211 54 MBit/s wlan: fetch the firmware from http://sourceforge.net/project/showfiles.php?group_id=129083 and place it under /lib/firmware/.\n* We will check if we can provide packages for at least some of these devices, but the legal status isn't necessarily easy.\n\n\n<b><u>Disclaimer:</u></b>\n\nThis is experimental software. Use at your own risk. The sidux project, it's developers and team members (all represented by the sidux Foundation, Inc) cannot be held liable under any circumstances for damage to hardware or software, lost data, or other direct or indirect damage resulting from the use of this software. If you do not agree to these terms and conditions, you are not permitted to use or further distribute this software.\n\n\n<b><u>Special thanks go to the entire sidux development team:</u></b>\n\nJoaquim Boura (x-un-i)\nRoland Engert (RoEn)\nAedan Kelly (etorix)\nBernard Gray (cleary)\nAndreas Hausmann (Bodhi)\nChris Hildebrandt (slam)\nRalph Hokanson Jr. (piper)\nHarald Hope (h2)\nKel Modderman (kelmo)\nStefan Lippers-Hollmann (slh)\nFerdi Thommes (devil)\nHorst Tritremmel (hjt)\nNiall Walsh (bfree)\nTrevor Walkley (bluewater)\nAndreas Weber (webera)\nand many more\n\na big thank you goes to the documentation and translation teams!\n\nThanks to all involved for making this possible:\n     Stefan Lippers-Hollmann (slh) \n</span>\n"));
+  gtk_widget_show (label_generally);
+  gtk_fixed_put (GTK_FIXED (fixed2), label_generally, 8, 8);
+  gtk_widget_set_size_request (label_generally, 560, 1600);
+  gtk_label_set_use_markup (GTK_LABEL (label_generally), TRUE);
+  gtk_label_set_line_wrap (GTK_LABEL (label_generally), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label_generally), 0, 0);
 
   g_signal_connect ((gpointer) install_progressbar, "delete_event",
                     G_CALLBACK (gtk_main_quit),
@@ -164,13 +164,13 @@ create_install_progressbar (void)
   GLADE_HOOKUP_OBJECT (install_progressbar, label2, "label2");
   GLADE_HOOKUP_OBJECT (install_progressbar, label_fifo, "label_fifo");
   GLADE_HOOKUP_OBJECT (install_progressbar, hseparator2, "hseparator2");
+  GLADE_HOOKUP_OBJECT (install_progressbar, image2, "image2");
+  GLADE_HOOKUP_OBJECT (install_progressbar, label1, "label1");
+  GLADE_HOOKUP_OBJECT (install_progressbar, label_clock, "label_clock");
   GLADE_HOOKUP_OBJECT (install_progressbar, scrolledwindow1, "scrolledwindow1");
   GLADE_HOOKUP_OBJECT (install_progressbar, viewport1, "viewport1");
   GLADE_HOOKUP_OBJECT (install_progressbar, fixed2, "fixed2");
   GLADE_HOOKUP_OBJECT (install_progressbar, label_generally, "label_generally");
-  GLADE_HOOKUP_OBJECT (install_progressbar, image2, "image2");
-  GLADE_HOOKUP_OBJECT (install_progressbar, label1, "label1");
-  GLADE_HOOKUP_OBJECT (install_progressbar, label_clock, "label_clock");
 
   return install_progressbar;
 }
