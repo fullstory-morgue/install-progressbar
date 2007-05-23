@@ -1,3 +1,9 @@
+install-progressbar (0.0.9) UNRELEASED; urgency=low
+
+  * NOT RELEASED YET
+
+ -- Stefan Lippers-Hollmann <s.l-h@gmx.de>  Wed, 23 May 2007 11:37:43 +0200
+
 install-progressbar (0.0.8) unstable; urgency=low
 
   * info text updated
